@@ -1,4 +1,6 @@
 #include "../includes_usr/fileIO.h"
+#include <iostream>
+#include <fstream>
 using namespace std;
 /* clears, then loads books from the file filename
  * returns  COULD_NOT_OPEN_FILE if cannot open filename
@@ -7,6 +9,26 @@ using namespace std;
  * */
 int loadBooks(std::vector<book> &books, const char* filename)
 {
+	ifstream bookstream;
+	bookstream.open(filename, ios::in);
+
+	if(!bookstream.is_open())
+		return COULD_NOT_OPEN_FILE;
+
+	if(books.size() == 0){
+		return NO_BOOKS_IN_LIBRARY;
+	}
+
+	std::string book;
+	while(!bookstream.eof()){
+		getline(bookstream, book);
+		books.push_back(book);
+
+
+	}
+
+
+
 	return SUCCESS;
 }
 
