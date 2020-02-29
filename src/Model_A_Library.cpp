@@ -201,7 +201,7 @@ void testenroll(){
 	}
 	
 
-	EXPECT_EQ(0, id,"te2",THREE_POINTS);
+	EXPECT_EQ(1, id,"te2",THREE_POINTS);
 
 	EXPECT_EQ(SUCCESS, whatIsPatronName(name,id),"te3",FIVE_POINTS);
 

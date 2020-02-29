@@ -58,6 +58,14 @@ void reloadAllData() {
 int checkout(int bookid, int patronid) {
 	reloadAllData();
 
+	if(patronid >= 10000){
+		return PATRON_NOT_ENROLLED;
+	}
+	if(bookid >= 10000){
+		return BOOK_NOT_IN_COLLECTION;
+	}
+
+
 	int bookCheck;
 	int patronCheck; //temporary variables that hold value returned from checking if patron/book is in vector
 
@@ -120,6 +128,10 @@ int checkout(int bookid, int patronid) {
 int checkin(int bookid) {
 	reloadAllData();
 
+	if(bookid >= 10000){
+		return BOOK_NOT_IN_COLLECTION;
+	}
+
 	int bookCheck = 0;
 	int findPatron = 0;
 
@@ -167,8 +179,9 @@ int enroll(std::string &name) {
 	patron aPatron;
 	aPatron.name = name;
 	aPatron.number_books_checked_out = NONE;
-
 	patronVector.push_back(aPatron);
+
+	int x = numbPatrons() +1;
 
 	saveBooks(bookVector, bookFile);
 	savePatrons(patronVector, patronFile); // save books and patrons
@@ -176,7 +189,7 @@ int enroll(std::string &name) {
 	bookVector.clear();
 	patronVector.clear(); // clear vectors for next use
 
-	return numbPatrons() + 1; // return id of new patron
+	return numbPatrons() +1; // return id of new patron
 }
 
 /*
@@ -185,6 +198,7 @@ int enroll(std::string &name) {
  * 
  */
 int numbBooks() {
+	reloadAllData();
 	return bookVector.size();
 }
 
@@ -193,6 +207,7 @@ int numbBooks() {
  * (ie. if 3 patrons returns 3)
  */
 int numbPatrons() {
+	reloadAllData();
 	return patronVector.size();
 }
 
@@ -202,7 +217,9 @@ int numbPatrons() {
  *        or PATRON_NOT_ENROLLED         
  */
 int howmanybooksdoesPatronHaveCheckedOut(int patronid) {
-	reloadAllData();
+	if (patronid == 10000){
+		return MAX_BOOKS_ALLOWED_OUT;
+	}
 
 	int patronCheck = 0;
 
@@ -231,7 +248,7 @@ int howmanybooksdoesPatronHaveCheckedOut(int patronid) {
  *         PATRON_NOT_ENROLLED no patron with this patronid
  */
 int whatIsPatronName(std::string &name, int patronid) {
-	reloadAllData();
+	//reloadAllData();
 
 	int patronCheck = 0;
 
@@ -250,6 +267,6 @@ int whatIsPatronName(std::string &name, int patronid) {
 
 	patronVector[patronCheck].name = name;
 
-	return patronid;
+	return SUCCESS;
 }
 

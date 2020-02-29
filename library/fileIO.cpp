@@ -37,41 +37,41 @@ int loadBooks(std::vector<book> &books, const char *filename) {
 		std::stringstream ss;
 
 		while (!bookistream.eof()) {
+
 			getline(bookistream, book1); //get first line (first book) from file
-			ss.str(book1);
-
 			if (book1 == "") {
-				return NO_BOOKS_IN_LIBRARY;
+				break;
+			} else {
+				ss.str(book1);
+				//abook = emptyBook;	//clear vector of books
+
+				std::getline(ss, bookID, CHAR_TO_SEARCH_FOR); //get string in line up to "," and store in string bookID
+				abook.book_id = stoi(bookID); // convert bookID string to int and set book_id field of struct to converted string bookID
+
+				std::getline(ss, title, CHAR_TO_SEARCH_FOR); //get title
+				abook.title = title;
+
+				std::getline(ss, author, CHAR_TO_SEARCH_FOR); // get author
+				abook.author = author;
+
+				std::getline(ss, state, CHAR_TO_SEARCH_FOR); //get checkout state
+				switch (stoi(state)) {
+				case 0:
+					abook.state = (UNKNOWN);
+					break;
+
+				case 1:
+					abook.state = (IN);
+					break;
+
+				case 2:
+					abook.state = (OUT);
+					break;
+				}
+
+				std::getline(ss, ltpatronID, CHAR_TO_SEARCH_FOR); // get patronID that book is loaned to
+				abook.loaned_to_patron_id = stoi(ltpatronID);
 			}
-
-			//abook = emptyBook;	//clear vector of books
-
-			std::getline(ss, bookID, CHAR_TO_SEARCH_FOR); //get string in line up to "," and store in string bookID
-			abook.book_id = stoi(bookID); // convert bookID string to int and set book_id field of struct to converted string bookID
-
-			std::getline(ss, title, CHAR_TO_SEARCH_FOR); //get title
-			abook.title = title;
-
-			std::getline(ss, author, CHAR_TO_SEARCH_FOR); // get author
-			abook.author = author;
-
-			std::getline(ss, state, CHAR_TO_SEARCH_FOR); //get checkout state
-			switch (stoi(state)) {
-			case 0:
-				abook.state = (UNKNOWN);
-				break;
-
-			case 1:
-				abook.state = (IN);
-				break;
-
-			case 2:
-				abook.state = (OUT);
-				break;
-			}
-
-			std::getline(ss, ltpatronID, CHAR_TO_SEARCH_FOR); // get patronID that book is loaned to
-			abook.loaned_to_patron_id = stoi(ltpatronID);
 
 			books.push_back(abook); //add a book struct to book vector
 			ss.clear();			//clear ss stream reading in lines of book file
@@ -144,28 +144,29 @@ int loadPatrons(std::vector<patron> &patrons, const char *filename) {
 		std::string patronID;
 		std::string patronName;
 		std::string numbooks;
+
 		patron apatron;
 		std::stringstream ss;
 
 		while (!patronistream.eof()) {
+
 			getline(patronistream, patron1);
-			ss.str(patron1);
+			if (patron1 == "") {
+				break;
+			} else {
+				ss.str(patron1);
 
-			if(patron1 == ""){
-				return NO_PATRONS_IN_LIBRARY;
+				//	patrons.clear();
+
+				std::getline(ss, patronID, CHAR_TO_SEARCH_FOR);
+				apatron.patron_id = stoi(patronID);
+
+				std::getline(ss, patronName, CHAR_TO_SEARCH_FOR);
+				apatron.name = patronName;
+
+				std::getline(ss, numbooks, CHAR_TO_SEARCH_FOR);
+				apatron.number_books_checked_out = stoi(numbooks);
 			}
-
-			//	patrons.clear();
-
-			std::getline(ss, patronID, CHAR_TO_SEARCH_FOR);
-			apatron.patron_id = stoi(patronID);
-
-			std::getline(ss, patronName, CHAR_TO_SEARCH_FOR);
-			apatron.name = patronName;
-
-			std::getline(ss, numbooks, CHAR_TO_SEARCH_FOR);
-			apatron.number_books_checked_out = stoi(numbooks);
-
 			patrons.push_back(apatron);
 			ss.clear();
 		}
