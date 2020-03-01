@@ -96,13 +96,16 @@ int checkout(int bookid, int patronid) {
 	}
 	patron checkedPatron = patronVector[patronCheck];
 
-	if (checkedPatron.number_books_checked_out == MAX_BOOKS_ALLOWED_OUT) {
+	if (howmanybooksdoesPatronHaveCheckedOut(patronid) == MAX_BOOKS_ALLOWED_OUT) {
 		return TOO_MANY_OUT;
 	}
 
 	checkedBook.state = OUT;
 	checkedBook.loaned_to_patron_id = patronid;
 	checkedPatron.number_books_checked_out++;  //update fields of both structs
+
+	bookVector[bookCheck] = checkedBook;
+	patronVector[patronCheck] = checkedPatron;
 
 	saveBooks(bookVector, bookFile);
 	savePatrons(patronVector, patronFile); // save books and patrons
@@ -240,9 +243,9 @@ int howmanybooksdoesPatronHaveCheckedOut(int patronid) {
 		return PATRON_NOT_ENROLLED; // patron not enrolled if patron_id not in patron vector
 
 	}
-	patron checkedPatron = patronVector[patronCheck];
+	//patron checkedPatron = patronVector[patronCheck];
 
-	return checkedPatron.number_books_checked_out;
+	return patronVector[patronid].number_books_checked_out;
 
 }
 
