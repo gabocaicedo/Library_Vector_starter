@@ -217,7 +217,8 @@ int numbPatrons() {
  *        or PATRON_NOT_ENROLLED         
  */
 int howmanybooksdoesPatronHaveCheckedOut(int patronid) {
-	if (patronid == 10000){
+	reloadAllData();
+	if (patronid == BOGUS_USER){
 		return MAX_BOOKS_ALLOWED_OUT;
 	}
 
@@ -248,7 +249,7 @@ int howmanybooksdoesPatronHaveCheckedOut(int patronid) {
  *         PATRON_NOT_ENROLLED no patron with this patronid
  */
 int whatIsPatronName(std::string &name, int patronid) {
-	//reloadAllData();
+	reloadAllData();
 
 	int patronCheck = 0;
 
