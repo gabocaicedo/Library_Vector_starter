@@ -177,11 +177,15 @@ int enroll(std::string &name) {
 	reloadAllData();
 
 	patron aPatron;
+	int aPatronID = numbPatrons();
+
 	aPatron.name = name;
 	aPatron.number_books_checked_out = NONE;
+	aPatron.patron_id = aPatronID;
+
 	patronVector.push_back(aPatron);
 
-	int x = numbPatrons() +1;
+	//int x = numbPatrons() +1;
 
 	saveBooks(bookVector, bookFile);
 	savePatrons(patronVector, patronFile); // save books and patrons
@@ -189,7 +193,7 @@ int enroll(std::string &name) {
 	bookVector.clear();
 	patronVector.clear(); // clear vectors for next use
 
-	return numbPatrons() +1; // return id of new patron
+	return aPatronID; // return id of new patron
 }
 
 /*
